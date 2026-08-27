@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POLY GAMER - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. LOGIN SECTION -->
+        <div id="login-section" class="card">
+            <h1 class="logo">POLY GAMER</h1>
+            <p>Gaming Start Karne ke liye Login Kare</p>
+            <input type="tel" id="phone" placeholder="Mobile Number (10 digits)" maxlength="10">
+            <button onclick="sendOTP()">Send OTP</button>
+        </div>
+
+        <!-- 2. OTP SECTION -->
+        <div id="otp-section" class="card" style="display: none;">
+            <h2>Verification</h2>
+            <p id="otp-text"></p>
+            <input type="number" id="otp-input" placeholder="4-Digit OTP">
+            <button onclick="verifyOTP()">Verify & Next</button>
+        </div>
+
+        <!-- 3. NAME SECTION -->
+        <div id="name-section" class="card" style="display: none;">
+            <h2>Player Profile</h2>
+            <p>Apna Gaming Name Likhe</p>
+            <input type="text" id="username" placeholder="Example: Rahul">
+            <button onclick="goToHome()">Create Profile</button>
+        </div>
+
+        <!-- 4. MAIN HOME PAGE SECTION -->
+        <div id="home-page" class="home-container" style="display: none;">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="user-meta">
+                    <h3 id="display-name">Player Name</h3>
+                    <span id="display-id" class="id-badge">ID: #000 🎮PG</span>
+                </div>
+                <div class="avatar">🎮</div>
+            </div>
+
+            <div class="welcome-section">
+                <h1>Welcome to <span class="neon-text">POLY GAMER</span></h1>
+                <p>Select your favorite game to play</p>
+            </div>
+
+            <!-- Games Grid -->
+            <div class="game-grid">
+                <div class="game-box">
+                    <div class="game-thumb">🔥</div>
+                    <span>Action King</span>
+                </div>
+                <div class="game-box">
+                    <div class="game-thumb">🏎️</div>
+                    <span>Turbo Race</span>
+                </div>
+                <div class="game-box">
+                    <div class="game-thumb">🔫</div>
+                    <span>Sniper Pro</span>
+                </div>
+                <div class="game-box">
+                    <div class="game-thumb">💎</div>
+                    <span>Ludo Win</span>
+                </div>
+            </div>
+            
+            <button class="logout-btn" onclick="location.reload()">Logout</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
