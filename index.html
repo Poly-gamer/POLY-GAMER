@@ -1,78 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> <meta name="monetag" content="3b91f32229c9242ce6e6588b4ef8a9f6">
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POLY GAMER - Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <title>POLY GAMER | Pro Player Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon: #00ffcc;
+            --dark-bg: #050608;
+            --card-bg: #0f1015;
+            --gold: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: var(--dark-bg); color: white; overflow-x: hidden; }
+
+        /* --- LOGIN SCREEN --- */
+        #auth-screen {
+            position: fixed; width: 100%; height: 100%; background: radial-gradient(circle, #0d1a17, #050608);
+            display: flex; align-items: center; justify-content: center; z-index: 10000;
+        }
+        .auth-card {
+            background: rgba(255,255,255,0.03); padding: 40px; border-radius: 30px;
+            border: 1px solid var(--neon); text-align: center; width: 90%; max-width: 400px;
+            backdrop-filter: blur(20px); box-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
+        }
+        .logo { font-family: 'Orbitron'; font-size: 2.5rem; color: var(--neon); text-shadow: 0 0 15px var(--neon); margin-bottom: 30px; }
+        input {
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #222;
+            background: #000; color: white; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--neon); box-shadow: 0 0 10px rgba(0, 255, 204, 0.2); }
+        .btn-glow {
+            width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--neon);
+            color: black; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s;
+        }
+
+        /* --- DASHBOARD LAYOUT --- */
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; padding-bottom: 120px; }
+        
+        .ad-banner {
+            width: 100%; height: 80px; background: #111; margin-bottom: 30px;
+            border: 1px dashed var(--neon); border-radius: 15px; display: flex; align-items: center; 
+            justify-content: center; color: var(--neon); font-size: 14px; text-transform: uppercase;
+        }
+
+        /* Profile Header */
+        .header-box {
+            background: var(--card-bg); padding: 20px; border-radius: 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid #1e1f26; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .player-info { display: flex; align-items: center; gap: 15px; }
+        .avatar-frame {
+            position: relative; width: 65px; height: 65px;
+        }
+        .avatar-frame img {
+            width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--neon);
+            object-fit: cover; box-shadow: 0 0 15px var(--neon);
+        }
+        .coin-display {
+            background: rgba(255, 215, 0, 0.1); color: var(--gold); 
+            padding: 8px 18px; border-radius: 50px; font-weight: bold; 
+            border: 1px solid var(--gold); display: flex; align-items: center; gap: 5px;
+        }
+
+        /* News/Feed Area (Heavy Placeholder) */
+        .news-section {
+            margin-top: 30px; background: rgba(255,255,255,0.02);
+            padding: 30px; border-radius: 25px; border: 1px solid #111; text-align: center;
+        }
+        .pro-badge { 
+            background: var(--neon); color: #000; padding: 4px 12px; 
+            border-radius: 5px; font-weight: bold; font-size: 0.7rem; font-family: 'Orbitron';
+        }
+
+        /* Reward Section (Bottom) */
+        .reward-card {
+            background: linear-gradient(145deg, #0a0b0e, #13151b); border: 2px solid var(--neon);
+            padding: 30px; border-radius: 30px; margin-top: 40px; text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 255, 204, 0.1);
+        }
+        .timer-text { font-size: 2.2rem; font-weight: bold; color: var(--gold); margin: 15px 0; font-family: 'Orbitron'; }
+        .spin-btn { 
+            background: var(--gold); color: #000; padding: 18px 40px; border-radius: 50px; 
+            border: none; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; 
+            transition: 0.3s; width: 100%;
+        }
+        .spin-btn:disabled { background: #222; color: #555; cursor: not-allowed; border: 1px solid #333; }
+
+        /* Modal Settings */
+        #settings-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            z-index: 20000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px);
+        }
+        .settings-content { 
+            background: #0f1015; padding: 35px; border-radius: 35px; width: 85%; max-width: 400px; 
+            border: 1px solid var(--neon); text-align: center;
+        }
+
+        /* Bottom Navbar */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; max-width: 500px;
+            background: rgba(10,11,15,0.98); display: flex; justify-content: space-around; 
+            padding: 20px; border-top: 1px solid #1e1f26; backdrop-filter: blur(15px);
+        }
+        .nav-link { font-size: 1.5rem; color: #444; cursor: pointer; transition: 0.3s; }
+        .nav-link.active { color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 1. LOGIN SECTION -->
-        <div id="login-section" class="card">
+    <!-- AUTH SECTION -->
+    <div id="auth-screen">
+        <div class="auth-card">
             <h1 class="logo">POLY GAMER</h1>
-            <p>Gaming Start Karne ke liye Login Kare</p>
-            <input type="tel" id="phone" placeholder="Mobile Number (10 digits)" maxlength="10">
-            <button onclick="sendOTP()">Send OTP</button>
-        </div>
-
-        <!-- 2. OTP SECTION -->
-        <div id="otp-section" class="card" style="display: none;">
-            <h2>Verification</h2>
-            <p id="otp-text"></p>
-            <input type="number" id="otp-input" placeholder="4-Digit OTP">
-            <button onclick="verifyOTP()">Verify & Next</button>
-        </div>
-
-        <!-- 3. NAME SECTION -->
-        <div id="name-section" class="card" style="display: none;">
-            <h2>Player Profile</h2>
-            <p>Apna Gaming Name Likhe</p>
-            <input type="text" id="username" placeholder="Example: Rahul">
-            <button onclick="goToHome()">Create Profile</button>
-        </div>
-
-        <!-- 4. MAIN HOME PAGE SECTION -->
-        <div id="home-page" class="home-container" style="display: none;">
-            <!-- Profile Header -->
-            <div class="profile-header">
-                <div class="user-meta">
-                    <h3 id="display-name">Player Name</h3>
-                    <span id="display-id" class="id-badge">ID: #000 🎮PG</span>
-                </div>
-                <div class="avatar">🎮</div>
-            </div>
-
-            <div class="welcome-section">
-                <h1>Welcome to <span class="neon-text">POLY GAMER</span></h1>
-                <p>Select your favorite game to play</p>
-            </div>
-
-            <!-- Games Grid -->
-            <div class="game-grid">
-                <div class="game-box">
-                    <div class="game-thumb">🔥</div>
-                    <span>Action King</span>
-                </div>
-                <div class="game-box">
-                    <div class="game-thumb">🏎️</div>
-                    <span>Turbo Race</span>
-                </div>
-                <div class="game-box">
-                    <div class="game-thumb">🔫</div>
-                    <span>Sniper Pro</span>
-                </div>
-                <div class="game-box">
-                    <div class="game-thumb">💎</div>
-                    <span>Ludo Win</span>
-                </div>
-            </div>
-            
-            <button class="logout-btn" onclick="location.reload()">Logout</button>
+            <p style="color: #666; font-size: 0.8rem; margin-bottom: 20px;">ACCESS ENCRYPTED DASHBOARD</p>
+            <input type="text" id="user-name-inp" placeholder="Player Name">
+            <input type="email" id="user-email-inp" placeholder="Email Address">
+            <input type="tel" id="user-phone-inp" placeholder="Phone Number (10 Digits)">
+            <button class="btn-glow" onclick="startVerification()">LOGIN SYSTEM</button>
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <!-- MAIN DASHBOARD -->
+    <div class="container" id="dashboard" style="display:none;">
+        <div class="ad-banner">ADSENSE TOP BANNER SLOT</div>
+
+        <header class="header-box">
+            <div class="player-info" onclick="openSettings()">
+                <div class="avatar-frame">
+                    <img id="main-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lucky" alt="pfp">
+                </div>
+                <div>
+                    <h3 id="display-name" style="font-family:'Orbitron'; font-size: 1rem;">Player</h3>
+                    <span class="pro-badge">ELITE MEMBER</span>
+                </div>
+            </div>
+            <div class="coin-display">💰 <span id="coin-val">0</span></div>
+        </header>
+
+        <!-- DASHBOARD FEED (CHOOSE TO ADD GAMES HERE LATER) -->
+        <div class="news-section">
+            <h2 style="color:var(--neon); font-family:'Orbitron'; font-size: 1.1rem;">WELCOME COMMANDER</h2>
+            <p style="color: #666; font-size: 0.8rem; margin-top: 10px;">
+                Dashboard is ready. You can insert your custom game components here anytime.
+            </p>
+        </div>
+
+        <!-- REWARD SYSTEM -->
+        <div class="reward-card">
+            <h3 style="font-family:'Orbitron'; color:var(--neon);">BONUS POOL</h3>
+            <p style="font-size: 0.75rem; color: #555; margin-top: 5px;">STAY ACTIVE FOR 10 MINS TO SPIN</p>
+            <div class="timer-text" id="live-timer">00:00</div>
+            <button class="spin-btn" id="spin-btn" disabled onclick="handleSpin()">SPIN NOW</button>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-overlay">
+        <div class="settings-content">
+            <h3 style="font-family:'Orbitron'; color:var(--neon); margin-bottom: 25px;">ACCOUNT SETTINGS</h3>
+            <div style="text-align: left; font-size: 0.75rem; color: #555; margin-bottom: 8px;">Change Identity Image:</div>
+            <input type="file" id="pic-input" accept="image/*" onchange="previewAvatar(this)">
+            <input type="text" id="edit-name" placeholder="Update Username">
+            <input type="email" id="edit-email" placeholder="Update Email">
+            <button class="btn-glow" onclick="saveAccount()">UPDATE PROFILE</button>
+            <p onclick="closeSettings()" style="margin-top:20px; color:#444; cursor:pointer; font-size: 0.9rem;">Back to Hub</p>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="nav-bar" id="nav-bar" style="display:none;">
+        <div class="nav-link active">🏠</div>
+        <div class="nav-link">🏆</div>
+        <div class="nav-link" onclick="openSettings()">👤</div>
+    </nav>
+
+    <script>
+        let playerStats = { coins: 0, timeActive: 0 };
+
+        // 1. AUTH LOGIC
+        function startVerification() {
+            const name = document.getElementById('user-name-inp').value;
+            const email = document.getElementById('user-email-inp').value;
+            const phone = document.getElementById('user-phone-inp').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if(name.length < 3 || !emailRegex.test(email) || phone.length !== 10) {
+                alert("Please fill all fields correctly!\n1. Name (min 3 chars)\n2. Valid Email\n3. 10 Digit Phone");
+                return;
+            }
+
+            let otp = Math.floor(1000 + Math.random() * 9000);
+            alert("POLY GAMER OTP\nYour code is: " + otp);
+            
+            let userOtp = prompt("Enter 4-Digit OTP:");
+            if(userOtp == otp) {
+                loginPlayer(name, email);
+            } else {
+                alert("Auth Failed! Invalid OTP.");
+            }
+        }
+
+        function loginPlayer(name, email) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('nav-bar').style.display = 'flex';
+            
+            playerStats.coins = 100; // Joining Bonus
+            document.getElementById('display-name').innerText = name.toUpperCase();
+            document.getElementById('coin-val').innerText = playerStats.coins;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-email').value = email;
+
+            alert("WELCOME COMMANDER!\n100 Coins added to your account. 💰");
+            startTimer();
+        }
+
+        // 2. REWARD TIMER
+        function startTimer() {
+            setInterval(() => {
+                playerStats.timeActive++;
+                let m = Math.floor(playerStats.timeActive / 60);
+                let s = playerStats.timeActive % 60;
+                document.getElementById('live-timer').innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+                
+                if(playerStats.timeActive >= 600) {
+                    const sb = document.getElementById('spin-btn');
+                    sb.disabled = false;
+                    sb.style.boxShadow = "0 0 20px var(--gold)";
+                    sb.innerText = "UNLOCKED: SPIN NOW";
+                }
+            }, 1000);
+        }
+
+        function handleSpin() {
+            let win = Math.floor(Math.random() * 9001) + 1000;
+            playerStats.coins += win;
+            document.getElementById('coin-val').innerText = playerStats.coins;
+            alert(`🎰 JACKPOT!\nYou won ${win} coins!`);
+            document.getElementById('spin-btn').disabled = true;
+            playerStats.timeActive = 0;
+        }
+
+        // 3. ACCOUNT SETTINGS
+        function openSettings() { document.getElementById('settings-overlay').style.display = 'flex'; }
+        function closeSettings() { document.getElementById('settings-overlay').style.display = 'none'; }
+
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = (e) => document.getElementById('main-avatar').src = e.target.result;
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveAccount() {
+            let newName = document.getElementById('edit-name').value;
+            if(newName.length >= 3) {
+                document.getElementById('display-name').innerText = newName.toUpperCase();
+                alert("Protocol Updated!");
+                closeSettings();
+            } else { alert("Name too short!"); }
+        }
+    </script>
+    <script src="https://pl31096702.profitableratecpmnetwork.com/4e/f1/a2/4ef1a2c322adf1fb32b1ad0cf8a54ff2.js"></script>
+
 </body>
 </html>
