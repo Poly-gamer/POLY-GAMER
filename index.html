@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> <meta name="google-site-verification" content="J1_E7cSYpVnoAFCZZdEMGbogg4bmSqiEBXFQdNaQtjw" />
+<head>
+    <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play Real Scorpio S11 Driving Game - Poly Gamer Official Game" />
+    <meta name="keywords" content="scorpio game, poly gamer, scorpio driving game, real car game" />
+    <meta name="google-site-verification" content="J1_E7cSYpVnoAFCZZdEMGbogg4bmSqiEBXFQdNaQtjw" />
+    
     <title>POLY GAMER | Pro Player Hub</title>
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --neon: #00ffcc;
@@ -66,7 +74,7 @@
             border: 1px solid var(--gold); display: flex; align-items: center; gap: 5px;
         }
 
-        /* News/Feed Area (Heavy Placeholder) */
+        /* News/Feed Area */
         .news-section {
             margin-top: 30px; background: rgba(255,255,255,0.02);
             padding: 30px; border-radius: 25px; border: 1px solid #111; text-align: center;
@@ -76,7 +84,7 @@
             border-radius: 5px; font-weight: bold; font-size: 0.7rem; font-family: 'Orbitron';
         }
 
-        /* Reward Section (Bottom) */
+        /* Reward Section */
         .reward-card {
             background: linear-gradient(145deg, #0a0b0e, #13151b); border: 2px solid var(--neon);
             padding: 30px; border-radius: 30px; margin-top: 40px; text-align: center;
@@ -141,7 +149,6 @@
             <div class="coin-display">💰 <span id="coin-val">0</span></div>
         </header>
 
-        <!-- DASHBOARD FEED (CHOOSE TO ADD GAMES HERE LATER) -->
         <div class="news-section">
             <h2 style="color:var(--neon); font-family:'Orbitron'; font-size: 1.1rem;">WELCOME COMMANDER</h2>
             <p style="color: #666; font-size: 0.8rem; margin-top: 10px;">
@@ -181,7 +188,6 @@
     <script>
         let playerStats = { coins: 0, timeActive: 0 };
 
-        // 1. AUTH LOGIC
         function startVerification() {
             const name = document.getElementById('user-name-inp').value;
             const email = document.getElementById('user-email-inp').value;
@@ -209,7 +215,7 @@
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('nav-bar').style.display = 'flex';
             
-            playerStats.coins = 100; // Joining Bonus
+            playerStats.coins = 100; 
             document.getElementById('display-name').innerText = name.toUpperCase();
             document.getElementById('coin-val').innerText = playerStats.coins;
             document.getElementById('edit-name').value = name;
@@ -219,7 +225,6 @@
             startTimer();
         }
 
-        // 2. REWARD TIMER
         function startTimer() {
             setInterval(() => {
                 playerStats.timeActive++;
@@ -245,7 +250,6 @@
             playerStats.timeActive = 0;
         }
 
-        // 3. ACCOUNT SETTINGS
         function openSettings() { document.getElementById('settings-overlay').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settings-overlay').style.display = 'none'; }
 
@@ -266,6 +270,8 @@
             } else { alert("Name too short!"); }
         }
     </script>
+    
+    <!-- Ads Script -->
     <script src="https://pl31096702.profitableratecpmnetwork.com/4e/f1/a2/4ef1a2c322adf1fb32b1ad0cf8a54ff2.js"></script>
 
 </body>
