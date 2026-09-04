@@ -12,11 +12,7 @@
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
-<meta property="og:image" content="https://poly-gamer.github.io/logo.png"><link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
-<meta property="og:image" content="https://poly-gamer.github.io/logo.png">
+    
     <style>
         :root {
             --neon: #00ffcc;
@@ -52,10 +48,25 @@
         /* --- DASHBOARD LAYOUT --- */
         .container { max-width: 500px; margin: 0 auto; padding: 20px; padding-bottom: 120px; }
         
+        /* AD SETTINGS FIXED */
         .ad-banner {
-            width: 100%; height: 80px; background: #111; margin-bottom: 30px;
-            border: 1px dashed var(--neon); border-radius: 15px; display: flex; align-items: center; 
-            justify-content: center; color: var(--neon); font-size: 14px; text-transform: uppercase;
+            width: 100%; 
+            min-height: 250px; /* विज्ञापन की ऊंचाई के अनुसार */
+            background: #000; 
+            margin: 20px 0;
+            border: 1px solid #222; 
+            border-radius: 15px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden;
+        }
+        .ad-label {
+            font-size: 10px;
+            color: #444;
+            margin-bottom: 5px;
+            text-transform: uppercase;
         }
 
         /* Profile Header */
@@ -64,7 +75,7 @@
             display: flex; justify-content: space-between; align-items: center;
             border: 1px solid #1e1f26; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .player-info { display: flex; align-items: center; gap: 15px; }
+        .player-info { display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .avatar-frame {
             position: relative; width: 65px; height: 65px;
         }
@@ -114,9 +125,11 @@
 
         /* Bottom Navbar */
         .nav-bar {
-            position: fixed; bottom: 0; width: 100%; max-width: 500px;
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); 
+            width: 100%; max-width: 500px;
             background: rgba(10,11,15,0.98); display: flex; justify-content: space-around; 
             padding: 20px; border-top: 1px solid #1e1f26; backdrop-filter: blur(15px);
+            z-index: 999;
         }
         .nav-link { font-size: 1.5rem; color: #444; cursor: pointer; transition: 0.3s; }
         .nav-link.active { color: var(--neon); text-shadow: 0 0 10px var(--neon); }
@@ -138,7 +151,21 @@
 
     <!-- MAIN DASHBOARD -->
     <div class="container" id="dashboard" style="display:none;">
-        <div class="ad-banner">ADSENSE TOP BANNER SLOT</div>
+        
+        <!-- TOP AD PLACEMENT -->
+        <div class="ad-banner">
+            <span class="ad-label">Advertisement</span>
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '9aadc22c97e263ed5aeee76588698489',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://www.highrevenueformat.com/9aadc22c97e263ed5aeee76588698489/invoke.js"></script>
+        </div>
 
         <header class="header-box">
             <div class="player-info" onclick="openSettings()">
@@ -156,17 +183,18 @@
         <div class="news-section">
             <h2 style="color:var(--neon); font-family:'Orbitron'; font-size: 1.1rem;">WELCOME COMMANDER</h2>
             <p style="color: #666; font-size: 0.8rem; margin-top: 10px;">
-                Dashboard is ready. You can insert your custom game components here anytime.
+                Your encrypted dashboard is now online. Insert your Scorpio S11 components below.
             </p>
         </div>
 
         <!-- REWARD SYSTEM -->
         <div class="reward-card">
             <h3 style="font-family:'Orbitron'; color:var(--neon);">BONUS POOL</h3>
-            <p style="font-size: 0.75rem; color: #555; margin-top: 5px;">STAY ACTIVE FOR 10 MINS TO SPIN</p>
+            <p style="font-size: 0.75rem; color: #666; margin-top: 5px;">STAY ACTIVE FOR 10 MINS TO SPIN</p>
             <div class="timer-text" id="live-timer">00:00</div>
             <button class="spin-btn" id="spin-btn" disabled onclick="handleSpin()">SPIN NOW</button>
         </div>
+
     </div>
 
     <!-- SETTINGS MODAL -->
@@ -204,13 +232,13 @@
             }
 
             let otp = Math.floor(1000 + Math.random() * 9000);
-            alert("POLY GAMER OTP\nYour code is: " + otp);
+            alert("POLY GAMER SECURITY\nYour OTP code is: " + otp);
             
             let userOtp = prompt("Enter 4-Digit OTP:");
             if(userOtp == otp) {
                 loginPlayer(name, email);
             } else {
-                alert("Auth Failed! Invalid OTP.");
+                alert("Verification Failed! Invalid OTP.");
             }
         }
 
@@ -236,11 +264,14 @@
                 let s = playerStats.timeActive % 60;
                 document.getElementById('live-timer').innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
                 
+                // 10 minute logic (600 seconds)
                 if(playerStats.timeActive >= 600) {
                     const sb = document.getElementById('spin-btn');
-                    sb.disabled = false;
-                    sb.style.boxShadow = "0 0 20px var(--gold)";
-                    sb.innerText = "UNLOCKED: SPIN NOW";
+                    if(sb.disabled) {
+                        sb.disabled = false;
+                        sb.style.boxShadow = "0 0 20px var(--gold)";
+                        sb.innerText = "UNLOCKED: SPIN NOW";
+                    }
                 }
             }, 1000);
         }
@@ -250,7 +281,10 @@
             playerStats.coins += win;
             document.getElementById('coin-val').innerText = playerStats.coins;
             alert(`🎰 JACKPOT!\nYou won ${win} coins!`);
+            
+            // Reset after spin
             document.getElementById('spin-btn').disabled = true;
+            document.getElementById('spin-btn').innerText = "WAITING FOR NEXT POOL";
             playerStats.timeActive = 0;
         }
 
@@ -269,13 +303,13 @@
             let newName = document.getElementById('edit-name').value;
             if(newName.length >= 3) {
                 document.getElementById('display-name').innerText = newName.toUpperCase();
-                alert("Protocol Updated!");
+                alert("Profile Updated!");
                 closeSettings();
             } else { alert("Name too short!"); }
         }
     </script>
     
-    <!-- Ads Script -->
+    <!-- External Ad Network Script (Popunder/Social Bar) -->
     <script src="https://pl31096702.profitableratecpmnetwork.com/4e/f1/a2/4ef1a2c322adf1fb32b1ad0cf8a54ff2.js"></script>
 
 </body>
